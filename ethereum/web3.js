@@ -1,0 +1,20 @@
+import Web3 from "web3"
+
+let web3
+
+if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
+    // We are in the browser and metamask is running.
+    window.ethereum.request({ method: "eth_requestAccounts" })
+    web3 = new Web3(window.ethereum)
+    window.ethereum.enable()
+} else {
+    // We are on the server *OR* the user is not running metamask
+    const provider = new Web3.providers.HttpProvider(
+        'https://ropsten.infura.io/v3/c0eb6034d6dd457bb8cbaf4f2acb7610'
+    )
+    web3 = new Web3(provider)
+}
+
+export default web3
+
+
