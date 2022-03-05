@@ -119,7 +119,8 @@ contract Campaign {
     function getSummary()
     public
     view
-    returns (uint, uint, uint, uint, address) {
+    returns (uint, uint, uint, uint, address)
+    {
         return (
             minimumContribution,
             address(this).balance,
@@ -133,7 +134,24 @@ contract Campaign {
     function getRequestsCount()
     public
     view
-    returns (uint) {
+    returns (uint)
+    {
         return numRequests;
+    }
+
+
+    function getRequest(uint index)
+    public
+    view
+    returns (string memory, uint, uint, bool, address)
+    {
+        Request storage request = requests[index];
+        return (
+            request.description,
+            request.value,
+            request.approvalCount,
+            request.complete,
+            request.recipient
+        );
     }
 }

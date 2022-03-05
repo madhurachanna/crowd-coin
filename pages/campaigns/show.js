@@ -3,7 +3,7 @@ import { Form, Button, Input, Message, Card, Grid } from 'semantic-ui-react'
 import Layout from '../../components/Layout.js'
 import factory from '../../ethereum/factory.js'
 import web3 from '../../ethereum/web3.js'
-import { Router } from '../../routes.js'
+import { Router, Link } from '../../routes.js'
 import ContributeForm from '../../components/ContributeForm'
 import _campaign from '../../ethereum/campaign.js'
 
@@ -57,12 +57,24 @@ const Show = (props) => {
         <Layout>
             <h3>Campaign Show</h3>
             <Grid>
-                <Grid.Column width={10}>
-                    {renderCards()}
-                </Grid.Column>
-                <Grid.Column width={6}>
-                    <ContributeForm />
-                </Grid.Column>
+                <Grid.Row>
+                    <Grid.Column width={10}>
+                        {renderCards()}
+                    </Grid.Column>
+                    <Grid.Column width={6}>
+                        <ContributeForm address={props.address} />
+                    </Grid.Column>
+                </Grid.Row>
+
+                <Grid.Row>
+                    <Grid.Column width={10}>
+                        <Link route={`/campaigns/${props.address}/requests`}>
+                            <a>
+                                <Button primary>View Requests</Button>
+                            </a>
+                        </Link>
+                    </Grid.Column>
+                </Grid.Row>
             </Grid>
         </Layout>
     )
@@ -76,7 +88,8 @@ Show.getInitialProps = async (props) => {
         balance: summary[1],
         requestCount: summary[2],
         approversCount: summary[3],
-        manager: summary[4]
+        manager: summary[4],
+        address: props.query.address
     }
 }
 

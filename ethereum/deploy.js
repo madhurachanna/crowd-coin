@@ -1,3 +1,5 @@
+const path = require('path')
+const fs = require('fs-extra')
 const HDWalletProvider = require('@truffle/hdwallet-provider')
 const Web3 = require('web3')
 const compiledFactory = require('./build/CampaignFactory.json')
@@ -6,6 +8,7 @@ const provider = new HDWalletProvider(
     'https://ropsten.infura.io/v3/c0eb6034d6dd457bb8cbaf4f2acb7610'
 )
 const web3 = new Web3(provider)
+const buildPath = path.resolve(__dirname, 'build');
 
 const deploy = async () => {
     console.log('Deploy started')
@@ -17,6 +20,10 @@ const deploy = async () => {
             .deploy({ data: compiledFactory.bytecode })
             .send({ from: accounts[0] })
         console.log('Contract deployed to ', result.options.address)
+        fs.outputJsonSync(
+            path.resolve(buildPath, 'address' + '.txt'),
+            result.options.address
+        )
     } catch (e) {
         console.log('Something went wrong!', e)
     }
